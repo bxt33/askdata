@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.env
+audit_logs/
+storage/
+data/
+.streamlit/secrets.toml
+streamlit.log
+streamlit.err.log
+.pytest_cache/

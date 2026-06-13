@@ -1,0 +1,29 @@
+streamlit>=1.32.0
+plotly>=5.20.0
+statsmodels>=0.14.0
+pandas==2.2.3; python_version >= "3.9"
+pandas>=1.5,<2.1; python_version < "3.9"
+numpy>=1.26,<3; python_version >= "3.9"
+numpy>=1.22,<2; python_version < "3.9"
+
+# LangChain and DashScope. The app can run without an API key by using
+# deterministic local planning, but these packages enable Qwen planning.
+langchain-classic==1.0.0; python_version >= "3.10"
+langchain-core>=1,<2; python_version >= "3.10"
+langchain-community>=0.3,<0.4; python_version >= "3.10"
+langchain-text-splitters>=1,<2; python_version >= "3.10"
+langsmith>=0.1.17,<1; python_version >= "3.10"
+dashscope
+openai>=1.0.0
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.0
+python-multipart>=0.0.9
+pytest>=8.0.0
+pymupdf>=1.24.0
+psycopg[binary]>=3.1.0
+pymysql>=1.1.0
+redis>=5.0.0
+rq>=1.16.0
+pytesseract>=0.3.10
+
+python-dotenv>=1.0.0

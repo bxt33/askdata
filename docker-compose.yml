@@ -1,0 +1,58 @@
+services:
+  shuxi-ui:
+    build: .
+    ports:
+      - "8501:8501"
+    environment:
+      - LLM_PROVIDER=deepseek
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+      - WAREHOUSE_DATABASE_URL=postgresql+psycopg://shuxi:shuxi@postgres:5432/shuxi
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./storage:/app/storage
+      - ./data:/app/data
+
+  shuxi-api:
+    build: .
+    command: uvicorn api:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    environment:
+      - LLM_PROVIDER=deepseek
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+      - WAREHOUSE_DATABASE_URL=postgresql+psycopg://shuxi:shuxi@postgres:5432/shuxi
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./storage:/app/storage
+      - ./data:/app/data
+
+  shuxi-worker:
+    build: .
+    command: rq worker shuxi --url redis://redis:6379/0
+    environment:
+      - LLM_PROVIDER=deepseek
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+      - WAREHOUSE_DATABASE_URL=postgresql+psycopg://shuxi:shuxi@postgres:5432/shuxi
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./storage:/app/storage
+      - ./data:/app/data
+
+  postgres:
+    image: postgres:16
+    environment:
+      - POSTGRES_USER=shuxi
+      - POSTGRES_PASSWORD=shuxi
+      - POSTGRES_DB=shuxi
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres-data:
